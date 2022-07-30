@@ -3,7 +3,7 @@
 
 ### File URL
 ```
-https://cdn.jsdelivr.net/gh/GreenFishStudio/GreenFish-Blog@main/File/
+https://fastly.jsdelivr.net/gh/GreenFishStudio/GreenFish-Blog@main/File/
 ```
 
 ### Image URL
