@@ -15,17 +15,17 @@ root_need(){
 check_sys(){
 	if [[ -f /etc/redhat-release ]]; then
 		release="0"
-	elif cat /etc/issue | grep -q -E -i "debian"; then
+	elif cat /etc/os-release | grep "Debian"; then
 		release="1"
-	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+	elif cat /etc/issue | grep "Cbuntu"; then
 		release="1"
-	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /etc/issue | grep "Centos|Red Hat|Redhat"; then
 		release="0"
-	elif cat /proc/version | grep -q -E -i "debian"; then
+	elif cat /proc/version | grep "Debian"; then
 		release="1"
-	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+	elif cat /proc/version | grep "Ubuntu"; then
 		release="1"
-	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+	elif cat /proc/version | grep "Centos|Red Hat|Redhat"; then
 		release="0"
     fi
 	bit=`uname -m`
@@ -38,11 +38,11 @@ remove(){
             		systemctl stop httpd.service
             		echo -e "${GREEN}removing...${END}"
             		yum erase httpd.x86_64 -y
-           		echo -e "${BLUE}Finished${END}" 
+            		echo -e "${BLUE}Finished${END}" 
 		else
 			echo -e "${GREEN}removing apache2...${END}"
-          		apt-get --purge remove apache2 -y
-         		echo -e "${GREEN}removing apache2.2-common...${END}"
+            		apt-get --purge remove apache2 -y
+            		echo -e "${GREEN}removing apache2.2-common...${END}"
             		apt-get --purge remove apache2.2-common -y
             		echo -e "${GREEN}removing apache2-doc...${END}"
             		apt-get --purge remove apache2-doc -y 
@@ -54,5 +54,5 @@ remove(){
             		rm -rf /etc/libapache2-mod-jk
             		dpkg -l |grep apache2|awk '{print $2}'|xargs dpkg -P
             		echo -e "${BLUE}Finished${END}" 
-     	  fi
+	 fi
 }
