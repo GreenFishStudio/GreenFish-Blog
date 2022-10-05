@@ -30,14 +30,6 @@ checkSystem() {
   elif grep </etc/issue -q -i "ubuntu" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "ubuntu" && [[ -f "/proc/version" ]]; then
     release="Ubuntu"
   fi
-
-  if [[ -z ${release} ]]; then
-    echo "其他系统"
-    exit 0
-  else
-    echo "当前系统为${release}"
-    uname -m
-  fi
 }
 
 
@@ -65,6 +57,6 @@ remove(){
             rm -rf /etc/libapache2-mod-jk
             dpkg -l |grep apache2|awk '{print $2}'|xargs dpkg -P
             echo -e "${BLUE}Finished${END}" 
-		fi
 	fi
 }
+remove
