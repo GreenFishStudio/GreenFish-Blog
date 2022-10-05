@@ -54,6 +54,5 @@ remove(){
             rm -rf /etc/libapache2-mod-jk
             dpkg -l |grep apache2|awk '{print $2}'|xargs dpkg -P
             echo -e "${BLUE}Finished${END}" 
-		fi
-	fi
+     fi
 }
