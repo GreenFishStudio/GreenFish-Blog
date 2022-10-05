@@ -12,26 +12,39 @@ root_need(){
     fi
 }
 
-check_sys(){
-	if cat /etc/os-release | grep "Debian"; then
-		release="1"
-	elif cat /etc/issue | grep "Cbuntu"; then
-		release="1"
-	elif cat /etc/issue | grep "Centos|Red Hat|Redhat"; then
-		release="0"
-	elif cat /proc/version | grep "Debian"; then
-		release="1"
-	elif cat /proc/version | grep "Ubuntu"; then
-		release="1"
-	elif cat /proc/version | grep "Centos|Red Hat|Redhat"; then
-		release="0"
+checkSystem() {
+  if [[ -n $(find /etc -name "redhat-release") ]] || grep </proc/version -q -i "centos"; then
+
+    centosVersion=$(rpm -q centos-release | awk -F "[-]" '{print $3}' | awk -F "[.]" '{print $1}')
+    if [[ -z "${centosVersion}" ]] && grep </etc/centos-release "release 8"; then
+      centosVersion=8
     fi
-	bit=`uname -m`
+    release="Centos"
+
+  elif grep </etc/issue -q -i "debian" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "debian" && [[ -f "/proc/version" ]]; then
+    if grep </etc/issue -i "8"; then
+      debianVersion=8
+    fi
+    release="Debian"
+
+  elif grep </etc/issue -q -i "ubuntu" && [[ -f "/etc/issue" ]] || grep </etc/issue -q -i "ubuntu" && [[ -f "/proc/version" ]]; then
+    release="Ubuntu"
+  fi
+
+  if [[ -z ${release} ]]; then
+    echo "其他系统"
+    exit 0
+  else
+    echo "当前系统为${release}"
+    uname -m
+  fi
 }
 
 
+
+
 remove(){
-		if [[ ${release} == "0" ]]; then
+		if [[ ${release} == "Centos" ]]; then
 			yum list | grep httpd
             systemctl stop httpd.service
             echo -e "${GREEN}removing...${END}"
