@@ -32,9 +32,6 @@ checkSystem() {
   fi
 }
 
-
-
-
 remove(){
 		if [[ ${release} == "Centos" ]]; then
 			yum list | grep httpd
