@@ -25,7 +25,7 @@ echo -e "${GREEN}removing apache2-utils${END}"
 apt-get --purge remove apache2-utils -y
 
 
-echo -e "${GREEN}Delete files related to apache${END}""
+echo -e "${GREEN}Delete files related to apache${END}"
 find /etc -name "*apache*" |xargs  rm -rf
 rm -rf /var/www
 rm -rf /etc/libapache2-mod-jk
