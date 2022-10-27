@@ -11,7 +11,7 @@ https://fastly.jsdelivr.net/gh/GreenFishStudio/GreenFish-Blog@main/File/
 https://cdn.jsdelivr.net/gh/GreenFishStudio/GreenFish-Blog@main/Image/
 ```
 
-### File URL
+### TG URL
 ```
 https://GreenFishStudio.github.io/GreenFish-Blog/TG/
 ```
