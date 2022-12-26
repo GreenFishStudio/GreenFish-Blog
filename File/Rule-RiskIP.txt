@@ -1,0 +1,1 @@
+(ip.src in $risk_ip) or (cf.threat_score gt 30)
