@@ -1,32 +1,42 @@
 #!/bin/bash
 
-# 获取 Python 版本信息
-read -p "请输入需要安装的 Python 版本号（例如：3.9.7）：" version
+# Get Python version to install from user input
+read -p "Enter Python version to install (e.g. 3.9.9): " PYTHON_VERSION
 
-# 获取操作系统信息
-os=$(cat /etc/os-release | grep '^ID=' | awk -F'=' '{print $2}')
-
-# 根据操作系统不同安装依赖包
-if [ $os == "debian" ] || [ $os == "ubuntu" ]; then
-    sudo apt-get update
-    sudo apt-get install build-essential libssl-dev libffi-dev -y
-elif [ $os == "centos" ] || [ $os == "fedora" ]; then
-    sudo yum install gcc openssl-devel bzip2-devel libffi-devel -y
+# Determine which package manager to use
+if command -v yum >/dev/null 2>&1; then
+    PKG_MANAGER="yum"
+elif command -v apt-get >/dev/null 2>&1; then
+    PKG_MANAGER="apt-get"
+elif command -v pacman >/dev/null 2>&1; then
+    PKG_MANAGER="pacman"
+else
+    echo "Error: could not determine package manager" >&2
+    exit 1
 fi
 
-# 下载 Python 安装包并解压
-wget https://www.python.org/ftp/python/$version/Python-$version.tgz
-tar -xvf Python-$version.tgz
-cd Python-$version
+# Install dependencies
+sudo $PKG_MANAGER update
+sudo $PKG_MANAGER install -y wget gcc make zlib1g-dev libffi-dev libssl-dev
 
-# 配置、编译和安装 Python
-./configure --enable-optimizations
-make -j8
+# Download and extract Python source code
+wget https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz
+tar xvf Python-$PYTHON_VERSION.tgz
+cd Python-$PYTHON_VERSION
+
+# Configure Python build with custom options
+./configure --enable-optimizations --enable-shared
+
+# Compile and install Python
+make -j$(nproc)
 sudo make altinstall
 
-# 清理安装包和临时文件
-cd ..
-rm -rf Python-$version
-rm Python-$version.tgz
+# Update dynamic linker cache
+sudo ldconfig
 
-echo "Python $version 安装完成！"
+# Clean up
+cd ..
+rm -rf Python-$PYTHON_VERSION Python-$PYTHON_VERSION.tgz
+
+# Print message with Python version and installation path
+echo "Python $PYTHON_VERSION has been successfully installed to /usr/local/bin/python$PYTHON_VERSION"
