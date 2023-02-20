@@ -31,6 +31,9 @@ cd Python-$PYTHON_VERSION
 make -j$(nproc)
 sudo make altinstall
 
+# Create symbolic link to the new Python interpreter
+sudo ln -s /usr/local/bin/python$PYTHON_VERSION /usr/local/bin/python${PYTHON_VERSION}
+
 # Update dynamic linker cache
 sudo ldconfig
 
@@ -39,4 +42,5 @@ cd ..
 rm -rf Python-$PYTHON_VERSION Python-$PYTHON_VERSION.tgz
 
 # Print message with Python version and installation path
-echo "Python $PYTHON_VERSION has been successfully installed to /usr/local/bin/python$PYTHON_VERSION"
+echo "Python $PYTHON_VERSION has been successfully installed to /usr/local/bin/python${PYTHON_VERSION}"
+echo "You can now use 'python${PYTHON_VERSION}' command to run Python $PYTHON_VERSION"
